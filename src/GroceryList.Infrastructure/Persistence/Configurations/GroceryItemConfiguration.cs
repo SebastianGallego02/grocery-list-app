@@ -26,11 +26,11 @@ internal sealed class GroceryItemConfiguration : IEntityTypeConfiguration<Grocer
             .HasForeignKey(item => item.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(item => item.UserId);
-
         // Enforces "no duplicate names per user" at database level as well. SQL Server's default
         // collation (SQL_Latin1_General_CP1_CI_AS) is case-insensitive, so "Milk" and "milk" collide,
         // matching the Application's case-insensitive duplicate check.
+        // UserId is the leading column, so this index also serves the per-user queries and the FK;
+        // a separate UserId index would be redundant (EF Core does not add one when it is covered).
         builder.HasIndex(item => new { item.UserId, item.Name }).IsUnique();
     }
 }
