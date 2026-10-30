@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddScoped<IGroceryItemRepository, GroceryItemRepository>();
 
         services.AddOptions<JwtOptions>()
-            .Bind(configuration.GetSection(JwtOptions.SectionName))
+            .Configure(options => configuration.GetSection(JwtOptions.SectionName).Bind(options))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
