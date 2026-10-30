@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GroceryList.Application\GroceryList.Application.csproj" />
+    <ProjectReference Include="..\..\src\GroceryList.Infrastructure\GroceryList.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
