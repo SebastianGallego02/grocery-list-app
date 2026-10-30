@@ -41,6 +41,17 @@ public static class Errors
 
     public static class GroceryItems
     {
+        public static readonly Error NameRequired =
+            Error.Validation("GroceryItems.NameRequired", "Name is required.");
+
+        public static readonly Error NameTooLong = Error.Validation(
+            "GroceryItems.NameTooLong",
+            $"Name must be at most {GroceryItem.NameMaxLength} characters.");
+
+        public static readonly Error QuantityInvalid = Error.Validation(
+            "GroceryItems.QuantityInvalid",
+            $"Quantity must be at least {GroceryItem.MinQuantity}.");
+
         // Also returned when the item belongs to another user, so its existence is not leaked.
         public static readonly Error NotFound =
             Error.NotFound("GroceryItems.NotFound", "The grocery item was not found.");

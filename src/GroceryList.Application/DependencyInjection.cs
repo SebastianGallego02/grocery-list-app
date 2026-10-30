@@ -1,4 +1,5 @@
 using GroceryList.Application.Auth;
+using GroceryList.Application.GroceryItems;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -11,6 +12,7 @@ public static class DependencyInjection
         services.TryAddSingleton(TimeProvider.System);
 
         services.AddScoped<AuthService>();
+        services.AddScoped<GroceryItemService>();
 
         return services;
     }
