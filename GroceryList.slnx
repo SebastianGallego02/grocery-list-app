@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GroceryList.Api/GroceryList.Api.csproj" />
+    <Project Path="src/GroceryList.Application/GroceryList.Application.csproj" />
+    <Project Path="src/GroceryList.Domain/GroceryList.Domain.csproj" />
+    <Project Path="src/GroceryList.Infrastructure/GroceryList.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GroceryList.IntegrationTests/GroceryList.IntegrationTests.csproj" />
+    <Project Path="tests/GroceryList.UnitTests/GroceryList.UnitTests.csproj" />
+  </Folder>
+</Solution>
