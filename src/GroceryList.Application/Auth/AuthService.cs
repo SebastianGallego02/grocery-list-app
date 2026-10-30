@@ -16,6 +16,12 @@ public sealed class AuthService(
     // Upper bound keeps hashing cost predictable for absurdly long inputs.
     public const int PasswordMaxLength = 128;
 
+    // A real hash of a random, discarded password, in the configured hasher's format
+    // (ASP.NET Core Identity v3: PBKDF2-HMAC-SHA512, 100,000 iterations). Verifying against it costs
+    // the same as verifying a real user's hash. Infrastructure tests check the format stays in sync.
+    internal const string DummyPasswordHash =
+        "AQAAAAIAAYagAAAAEN4n2EhI/A0HFX9V/ZH4HeA+S1AS+l1n3dX3frkmKavSPnigMyxzHefy87kCJsYJrw==";
+
     public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -71,7 +77,15 @@ public sealed class AuthService(
         var user = await userRepository.GetByUsernameAsync(request.Username.Trim(), cancellationToken);
 
         // Same error for unknown user and wrong password, so usernames cannot be enumerated.
-        if (user is null || !passwordHasher.Verify(request.Password, user.PasswordHash))
+        if (user is null)
+        {
+            // Password hashing is deliberately slow. Skipping it for unknown usernames would make those
+            // responses measurably faster and leak which usernames exist, so verify against a dummy hash.
+            passwordHasher.Verify(request.Password, DummyPasswordHash);
+            return Errors.Auth.InvalidCredentials;
+        }
+
+        if (!passwordHasher.Verify(request.Password, user.PasswordHash))
         {
             return Errors.Auth.InvalidCredentials;
         }

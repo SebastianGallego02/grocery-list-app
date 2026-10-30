@@ -168,6 +168,14 @@ public sealed class AuthServiceTests
     }
 
     [Fact]
+    public async Task Login_WithUnknownUser_StillVerifiesPasswordAgainstDummyHash()
+    {
+        await _sut.LoginAsync(new LoginRequest("ghost", ValidPassword), CancellationToken.None);
+
+        _passwordHasher.Received(1).Verify(ValidPassword, AuthService.DummyPasswordHash);
+    }
+
+    [Fact]
     public async Task Login_WithWrongPassword_ReturnsInvalidCredentials()
     {
         GivenExistingUser("alice", ValidPassword);

@@ -1,3 +1,4 @@
+using GroceryList.Application.Auth;
 using GroceryList.Infrastructure.Security;
 
 namespace GroceryList.UnitTests.Infrastructure.Security;
@@ -45,5 +46,23 @@ public sealed class PasswordHasherTests
         Assert.NotEqual(first, second);
         Assert.True(_sut.Verify(Password, first));
         Assert.True(_sut.Verify(Password, second));
+    }
+
+    [Fact]
+    public void AuthServiceDummyHash_IsAcceptedByHasherAndNeverMatches()
+    {
+        Assert.False(_sut.Verify(Password, AuthService.DummyPasswordHash));
+    }
+
+    [Fact]
+    public void AuthServiceDummyHash_UsesSameAlgorithmAndIterationsAsFreshHashes()
+    {
+        // Identity v3 header: format marker (1 byte), PRF (4), iteration count (4), salt length (4).
+        // If it drifts from fresh hashes, verifying the dummy no longer costs the same as a real one.
+        const int headerLength = 13;
+        var dummyHeader = Convert.FromBase64String(AuthService.DummyPasswordHash)[..headerLength];
+        var freshHeader = Convert.FromBase64String(_sut.Hash(Password))[..headerLength];
+
+        Assert.Equal(freshHeader, dummyHeader);
     }
 }
