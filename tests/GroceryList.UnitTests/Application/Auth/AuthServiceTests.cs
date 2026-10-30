@@ -4,6 +4,7 @@ using GroceryList.Application.Common;
 using GroceryList.Domain.Entities;
 using Microsoft.Extensions.Time.Testing;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace GroceryList.UnitTests.Application.Auth;
 
@@ -83,6 +84,21 @@ public sealed class AuthServiceTests
         Assert.Equal(Errors.Auth.UsernameTaken, result.Error);
         Assert.Equal(ErrorType.Conflict, result.Error.Type);
         await AssertNothingPersistedAsync();
+        _tokenService.DidNotReceiveWithAnyArgs().CreateToken(default!);
+    }
+
+    [Fact]
+    public async Task Register_WhenConcurrentRegistrationWinsTheRace_ReturnsConflict()
+    {
+        // The uniqueness check passes, but another request inserts the same username before we save.
+        _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .ThrowsAsync(new UniqueConstraintViolationException("duplicate"));
+
+        var result = await _sut.RegisterAsync(
+            new RegisterRequest("alice", "Alice", ValidPassword), CancellationToken.None);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal(Errors.Auth.UsernameTaken, result.Error);
         _tokenService.DidNotReceiveWithAnyArgs().CreateToken(default!);
     }
 

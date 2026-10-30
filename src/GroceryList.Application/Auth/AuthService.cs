@@ -39,7 +39,16 @@ public sealed class AuthService(
             timeProvider.GetUtcNow());
 
         await userRepository.AddAsync(user, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        catch (UniqueConstraintViolationException)
+        {
+            // A concurrent registration took the username between the check above and the insert.
+            return Errors.Auth.UsernameTaken;
+        }
 
         return user.ToAuthResponse(tokenService.CreateToken(user));
     }

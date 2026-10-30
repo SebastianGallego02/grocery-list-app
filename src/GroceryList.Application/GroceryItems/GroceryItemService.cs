@@ -43,7 +43,16 @@ public sealed class GroceryItemService(
         var item = GroceryItem.Create(userId, name, request.Quantity, timeProvider.GetUtcNow());
 
         await groceryItemRepository.AddAsync(item, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        catch (UniqueConstraintViolationException)
+        {
+            // A concurrent request added the same name between the check above and the insert.
+            return Errors.GroceryItems.DuplicateName;
+        }
 
         return item.ToResponse();
     }

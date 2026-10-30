@@ -4,6 +4,7 @@ using GroceryList.Application.GroceryItems;
 using GroceryList.Domain.Entities;
 using Microsoft.Extensions.Time.Testing;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace GroceryList.UnitTests.Application.GroceryItems;
 
@@ -110,6 +111,19 @@ public sealed class GroceryItemServiceTests
         Assert.Equal(Errors.GroceryItems.DuplicateName, result.Error);
         Assert.Equal(ErrorType.Conflict, result.Error.Type);
         await AssertNothingAddedAsync();
+    }
+
+    [Fact]
+    public async Task Add_WhenConcurrentAddWinsTheRace_ReturnsConflict()
+    {
+        // The duplicate check passes, but another request inserts the same name before we save.
+        _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .ThrowsAsync(new UniqueConstraintViolationException("duplicate"));
+
+        var result = await _sut.AddAsync(new AddGroceryItemRequest("Milk"), CancellationToken.None);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal(Errors.GroceryItems.DuplicateName, result.Error);
     }
 
     [Fact]
