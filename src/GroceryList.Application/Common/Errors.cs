@@ -1,3 +1,6 @@
+using GroceryList.Application.Auth;
+using GroceryList.Domain.Entities;
+
 namespace GroceryList.Application.Common;
 
 /// <summary>
@@ -7,6 +10,27 @@ public static class Errors
 {
     public static class Auth
     {
+        public static readonly Error UsernameRequired =
+            Error.Validation("Auth.UsernameRequired", "Username is required.");
+
+        public static readonly Error UsernameLength = Error.Validation(
+            "Auth.UsernameLength",
+            $"Username must be between {User.UsernameMinLength} and {User.UsernameMaxLength} characters.");
+
+        public static readonly Error FullNameRequired =
+            Error.Validation("Auth.FullNameRequired", "Full name is required.");
+
+        public static readonly Error FullNameTooLong = Error.Validation(
+            "Auth.FullNameTooLong",
+            $"Full name must be at most {User.FullNameMaxLength} characters.");
+
+        public static readonly Error PasswordRequired =
+            Error.Validation("Auth.PasswordRequired", "Password is required.");
+
+        public static readonly Error PasswordLength = Error.Validation(
+            "Auth.PasswordLength",
+            $"Password must be between {AuthService.PasswordMinLength} and {AuthService.PasswordMaxLength} characters.");
+
         public static readonly Error UsernameTaken =
             Error.Conflict("Auth.UsernameTaken", "The username is already taken.");
 
