@@ -19,6 +19,18 @@ public sealed class UserTests
     }
 
     [Fact]
+    public void Create_GeneratesVersion7IdStampedWithCreationTime()
+    {
+        var user = User.Create("alice", "Alice", "hash", Now);
+
+        Assert.Equal(7, user.Id.Version);
+        Assert.Equal(Now.ToUnixTimeMilliseconds(), UnixMillisecondsOf(user.Id));
+    }
+
+    // The first 48 bits of a v7 GUID (in its big-endian string form) are the Unix timestamp in ms.
+    internal static long UnixMillisecondsOf(Guid id) => Convert.ToInt64(id.ToString("N")[..12], 16);
+
+    [Fact]
     public void Create_GeneratesUniqueIds()
     {
         var first = User.Create("alice", "Alice", "hash", Now);

@@ -20,6 +20,9 @@ public sealed class User
         CreatedAtUtc = createdAtUtc;
     }
 
+    /// <summary>
+    /// Version 7 GUID stamped with the creation time. See <see cref="GroceryItem.Id"/> for the rationale.
+    /// </summary>
     public Guid Id { get; private set; }
 
     public string Username { get; private set; } = null!;
@@ -53,6 +56,6 @@ public sealed class User
                 $"Full name must be at most {FullNameMaxLength} characters.");
         }
 
-        return new User(Guid.NewGuid(), username, fullName, passwordHash, createdAtUtc);
+        return new User(Guid.CreateVersion7(createdAtUtc), username, fullName, passwordHash, createdAtUtc);
     }
 }

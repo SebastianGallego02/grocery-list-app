@@ -19,6 +19,16 @@ public sealed class GroceryItem
         CreatedAtUtc = createdAtUtc;
     }
 
+    /// <summary>
+    /// Version 7 GUID stamped with the creation time (from TimeProvider, via <c>createdAtUtc</c>).
+    /// </summary>
+    /// <remarks>
+    /// Random (v4) keys land at random positions in a B-tree index, causing page splits and
+    /// fragmentation; v7 keys are time-ordered, so in stores that compare GUIDs in byte order new keys
+    /// append at the end. Caveat: SQL Server orders <c>uniqueidentifier</c> starting from the last
+    /// 6 bytes, which are random in v7, so on a SQL Server clustered primary key this alone does not
+    /// remove fragmentation. Ids are still generated in the Domain so entities are valid before saving.
+    /// </remarks>
     public Guid Id { get; private set; }
 
     public Guid UserId { get; private set; }
@@ -51,7 +61,7 @@ public sealed class GroceryItem
 
         ArgumentOutOfRangeException.ThrowIfLessThan(quantity, MinQuantity);
 
-        return new GroceryItem(Guid.NewGuid(), userId, name, quantity, createdAtUtc);
+        return new GroceryItem(Guid.CreateVersion7(createdAtUtc), userId, name, quantity, createdAtUtc);
     }
 
     public void PutInBasket() => IsInBasket = true;

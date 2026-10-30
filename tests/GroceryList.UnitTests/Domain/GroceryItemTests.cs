@@ -21,6 +21,24 @@ public sealed class GroceryItemTests
     }
 
     [Fact]
+    public void Create_GeneratesVersion7IdStampedWithCreationTime()
+    {
+        var item = GroceryItem.Create(UserId, "Milk", 1, Now);
+
+        Assert.Equal(7, item.Id.Version);
+        Assert.Equal(Now.ToUnixTimeMilliseconds(), UserTests.UnixMillisecondsOf(item.Id));
+    }
+
+    [Fact]
+    public void Create_GeneratesUniqueIdsEvenWithTheSameTimestamp()
+    {
+        var first = GroceryItem.Create(UserId, "Milk", 1, Now);
+        var second = GroceryItem.Create(UserId, "Bread", 1, Now);
+
+        Assert.NotEqual(first.Id, second.Id);
+    }
+
+    [Fact]
     public void Create_WithEmptyUserId_Throws()
     {
         Assert.Throws<ArgumentException>(() => GroceryItem.Create(Guid.Empty, "Milk", 1, Now));
