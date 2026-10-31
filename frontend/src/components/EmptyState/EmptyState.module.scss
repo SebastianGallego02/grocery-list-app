@@ -1,0 +1,17 @@
+@use '../../styles/variables' as *;
+
+.empty {
+  padding: $space-8 $space-4;
+  text-align: center;
+  border: 1px dashed $color-border;
+  border-radius: $radius;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.description {
+  margin-top: $space-1;
+  color: $color-text-muted;
+}

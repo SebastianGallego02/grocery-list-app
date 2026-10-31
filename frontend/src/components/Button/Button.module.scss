@@ -1,0 +1,60 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  border: 1px solid transparent;
+  border-radius: $radius;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+  @include focus-ring;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.medium {
+  padding: $space-3 $space-4;
+}
+
+.small {
+  padding: $space-1 $space-3;
+  font-size: $font-size-sm;
+}
+
+.primary {
+  background: $color-primary;
+  color: $color-on-primary;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-hover;
+  }
+}
+
+.secondary {
+  background: $color-surface;
+  border-color: $color-border;
+  color: $color-text;
+
+  &:hover:not(:disabled) {
+    border-color: $color-text-muted;
+  }
+}
+
+.danger {
+  background: $color-surface;
+  border-color: $color-danger;
+  color: $color-danger;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-surface;
+    color: $color-danger-hover;
+  }
+}

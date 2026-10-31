@@ -1,0 +1,23 @@
+@use '../../styles/variables' as *;
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border: 1px solid $color-danger;
+  border-radius: $radius;
+  background: $color-danger-surface;
+  color: $color-danger-hover;
+}
+
+.message {
+  flex: 1 1 12rem;
+}
+
+.actions {
+  display: flex;
+  gap: $space-2;
+}
