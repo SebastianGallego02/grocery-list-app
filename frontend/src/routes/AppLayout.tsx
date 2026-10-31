@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { Button } from '../components'
+import { BasketIcon, Button, LogoutIcon } from '../components'
 import { useAuth } from '../features/auth/useAuth'
 import styles from './AppLayout.module.scss'
 
@@ -11,14 +11,21 @@ export function AppLayout() {
     <>
       <header className={styles.header}>
         <div className={styles.inner}>
-          <p className={styles.brand}>Grocery List</p>
+          <p className={styles.brand}>
+            <span className={styles.mark} aria-hidden="true">
+              <BasketIcon />
+            </span>
+            Grocery List
+          </p>
           <div className={styles.account}>
             {user && (
               <span className={styles.user}>
-                Signed in as <strong>{user.fullName}</strong>
+                <span className={styles.signedInAs}>Signed in as </span>
+                <strong className={styles.userName}>{user.fullName}</strong>
               </span>
             )}
-            <Button variant="secondary" size="small" onClick={logout}>
+            <Button variant="inverse" size="small" onClick={logout}>
+              <LogoutIcon />
               Log out
             </Button>
           </div>

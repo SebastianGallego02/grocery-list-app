@@ -3,32 +3,66 @@
 
 .page {
   display: flex;
-  justify-content: center;
-  padding: $space-8 $space-4;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-6;
+  min-height: 100vh;
+  padding: $space-10 $space-4;
+  // Primary band behind the brand; the card overlaps it on the light background.
+  background: linear-gradient($color-primary 0, $color-primary 12rem, $color-background 12rem);
+
+  @include from-md {
+    padding-top: $space-12;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  color: $color-on-primary;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: $radius-sm;
+  background: $color-accent;
+  color: $color-primary;
 }
 
 .card {
   @include card;
   width: 100%;
-  max-width: 24rem;
+  max-width: 26rem;
   padding: $space-6;
   display: flex;
   flex-direction: column;
-  gap: $space-4;
-}
+  gap: $space-5;
+  box-shadow: $shadow-lg;
 
-.brand {
-  color: $color-primary;
-  font-weight: $font-weight-bold;
+  @include from-md {
+    padding: $space-8;
+  }
 }
 
 .title {
   font-size: $font-size-xl;
+  line-height: $line-height-tight;
 }
 
 .footer {
   font-size: $font-size-sm;
   color: $color-muted;
+  text-align: center;
+
+  a {
+    font-weight: $font-weight-semibold;
+  }
 }
 
 // Shared by the login and register forms.
@@ -36,4 +70,8 @@
   display: flex;
   flex-direction: column;
   gap: $space-4;
+
+  button[type='submit'] {
+    margin-top: $space-2;
+  }
 }
