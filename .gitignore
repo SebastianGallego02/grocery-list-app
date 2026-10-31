@@ -21,3 +21,6 @@ $RECYCLE.BIN/
 
 # Logs
 *.log
+
+# Archives (e.g. local zips of the project shared by hand)
+*.zip
