@@ -1,0 +1,36 @@
+@use '../../styles/variables' as *;
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.text {
+  color: $color-muted;
+
+  strong {
+    color: $color-text;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.done {
+  color: $color-success;
+  font-weight: $font-weight-semibold;
+}
+
+.track {
+  height: $space-2;
+  border-radius: $radius-pill;
+  background: $color-surface-sunken;
+  overflow: hidden;
+}
+
+// The orange appears here as decoration only; the count above is the accessible information.
+.fill {
+  height: 100%;
+  border-radius: $radius-pill;
+  background: $color-accent;
+  transition: width 240ms ease;
+}

@@ -4,11 +4,23 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-6;
+  gap: $space-5;
+
+  @include from-md {
+    gap: $space-6;
+  }
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
 }
 
 .title {
+  color: $color-primary;
   font-size: $font-size-xl;
+  line-height: $line-height-tight;
 }
 
 .section {
@@ -18,12 +30,17 @@
 }
 
 .sectionTitle {
-  font-size: $font-size-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-muted;
 }
 
 .count {
-  color: $color-muted;
   font-weight: $font-weight-regular;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .items {
@@ -31,4 +48,5 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }

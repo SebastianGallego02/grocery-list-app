@@ -1,30 +1,60 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
+// Height of a TextField label plus its gap, so the button lines up with the inputs.
+$label-offset: calc(#{$font-size-sm} * #{$line-height-base} + #{$space-1});
+
 .form {
   @include card;
   display: flex;
   flex-direction: column;
   gap: $space-3;
   padding: $space-4;
+
+  @include from-md {
+    padding: $space-5;
+  }
 }
 
+// Mobile: product on its own row, quantity and Add below. Desktop: one row.
 .fields {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'name name'
+    'quantity submit';
+  align-items: start;
   gap: $space-3;
+
+  @include from-md {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'name quantity submit';
+  }
 }
 
 .name {
-  flex: 1 1 14rem;
+  grid-area: name;
 }
 
 .quantity {
-  flex: 0 0 6rem;
+  grid-area: quantity;
+  width: 9.5rem;
+
+  input {
+    text-align: center;
+    font-weight: $font-weight-semibold;
+    // The stepper replaces the browser's own spin buttons.
+    appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+  }
 }
 
-// Aligns the button with the inputs (below their labels).
 .submit {
-  margin-top: 1.6rem;
+  grid-area: submit;
+  margin-top: $label-offset;
 }

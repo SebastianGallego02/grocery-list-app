@@ -1,6 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { ApiError, getErrorMessage } from '../../api/httpClient'
-import { Button, ErrorBanner, TextField } from '../../components'
+import { Button, ErrorBanner, MinusIcon, PlusIcon, TextField } from '../../components'
 import type { AddGroceryItemRequest } from './types'
 import styles from './AddItemForm.module.scss'
 import {
@@ -14,6 +14,15 @@ import {
 
 const EMPTY: NewItemValues = { name: '', quantity: '1' }
 
+/** Next stepper value, never below the minimum; an empty or invalid input becomes the minimum. */
+function stepQuantity(raw: string, delta: number): string {
+  const current = Number(raw)
+  if (!Number.isInteger(current) || current < MIN_QUANTITY) {
+    return String(MIN_QUANTITY)
+  }
+  return String(Math.max(MIN_QUANTITY, current + delta))
+}
+
 interface AddItemFormProps {
   onAdd: (request: AddGroceryItemRequest) => Promise<void>
 }
@@ -24,6 +33,9 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
   const [formError, setFormError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
+
+  const step = (delta: number) =>
+    setValues((current) => ({ ...current, quantity: stepQuantity(current.quantity, delta) }))
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -83,8 +95,22 @@ export function AddItemForm({ onAdd }: AddItemFormProps) {
           value={values.quantity}
           onChange={(event) => setValues((current) => ({ ...current, quantity: event.target.value }))}
           error={fieldErrors.quantity}
+          // The stepper buttons stay enabled at the minimum (they clamp) so keyboard focus is never lost.
+          startAdornment={
+            <Button variant="ghost" size="icon" onClick={() => step(-1)}>
+              <MinusIcon />
+              <span className="visually-hidden">Decrease quantity</span>
+            </Button>
+          }
+          endAdornment={
+            <Button variant="ghost" size="icon" onClick={() => step(1)}>
+              <PlusIcon />
+              <span className="visually-hidden">Increase quantity</span>
+            </Button>
+          }
         />
-        <Button type="submit" className={styles.submit} isLoading={isSubmitting}>
+        <Button type="submit" variant="accent" className={styles.submit} isLoading={isSubmitting}>
+          {!isSubmitting && <PlusIcon />}
           {isSubmitting ? 'Adding…' : 'Add'}
         </Button>
       </div>
