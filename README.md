@@ -17,8 +17,13 @@ TBD
 | `backend/` | .NET solution: Domain, Application, Infrastructure, Api and tests |
 | `frontend/` | React + TypeScript single-page app |
 | `docs/` | Project documentation |
-| `docker-compose.yml` | Local SQL Server |
+| `docker-compose.yml` | Local stack: SQL Server, API and web app |
 
 ## Documentation
 
-See [`docs/`](docs/).
+| Document | Contents |
+|---|---|
+| [Architecture](docs/architecture.md) | User stories, C4 diagrams, sequence diagrams, data model, error handling, security, proposed Azure deployment |
+| [API reference](docs/api.md) | Endpoints, request/response examples, error codes |
+| [Decision records](docs/adr/) | ADRs 0001–0008 |
+| [Known issues](docs/known-issues.md) | Limitations and future work |
