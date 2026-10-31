@@ -1,0 +1,36 @@
+// Design tokens. Components use these through `@use '../../styles/variables' as *;`.
+
+// Colours (text/background pairs meet WCAG AA contrast).
+$color-background: #f5f6f8;
+$color-surface: #ffffff;
+$color-text: #1f2933;
+$color-text-muted: #52606d;
+$color-border: #d3d9e0;
+$color-primary: #1f6f5c;
+$color-primary-hover: #17574a;
+$color-on-primary: #ffffff;
+$color-danger: #b42318;
+$color-danger-hover: #912018;
+$color-danger-surface: #fef3f2;
+$color-focus: #2563eb;
+$color-done: #7b8794;
+
+// Spacing scale.
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+
+// Typography.
+$font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.75rem;
+
+// Shape and layout.
+$radius: 0.5rem;
+$content-max-width: 40rem;
+$shadow-card: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.1);

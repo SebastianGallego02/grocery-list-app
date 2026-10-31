@@ -1,32 +1,20 @@
-# React + TypeScript + Vite
+# Grocery List – frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript single-page app built with Vite and Sass. See the root `README.md` for the
+whole project.
 
-Currently, two official plugins are available:
+## Scripts (run from `frontend/`)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server on http://localhost:5173; `/api` is proxied to the API on http://localhost:5079 |
+| `npm run build` | Type-check and production build into `dist/` |
+| `npm run lint` | Oxlint |
+| `npm test` | Unit and component tests (Vitest + Testing Library, jsdom) |
 
-## React Compiler
+## Configuration
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+| Variable | Default | Purpose |
+|---|---|---|
+| `VITE_API_BASE_URL` | empty (same origin) | Base URL of the API, baked in at build time (the Docker image sets it) |
+| `API_PROXY_TARGET` | `http://localhost:5079` | Dev server only: where `/api` is proxied |
