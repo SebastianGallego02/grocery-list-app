@@ -49,3 +49,9 @@
     @content;
   }
 }
+
+@mixin from-lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}

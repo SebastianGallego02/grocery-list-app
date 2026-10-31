@@ -75,6 +75,7 @@ $shadow-lg: 0 8px 24px rgba(26, 28, 46, 0.12);
 $touch-target: 2.75rem; // 44px minimum for anything tappable.
 $content-max-width: 40rem;
 $breakpoint-md: 40rem;
+$breakpoint-lg: 64rem; // 1024px: from here the auth pages use the split layout.
 
 // Motion.
 $transition-fast: 120ms ease;
