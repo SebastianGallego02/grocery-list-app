@@ -514,7 +514,7 @@ flowchart LR
 | Suite | Scope | Tooling |
 |---|---|---|
 | `backend/tests/GroceryList.UnitTests` (124 tests) | Domain invariants, `Result`, services with fakes (`AuthService`, `GroceryItemService`, `UserService`), JWT options and tokens, password hasher, DI validation | xUnit |
-| `backend/tests/GroceryList.IntegrationTests` (47 tests) | Full HTTP pipeline against a real SQL Server: auth, authorization (401 everywhere), CRUD, ownership (404 for other users), persistence and unique indexes | xUnit, `WebApplicationFactory`, Testcontainers (SQL Server 2022; needs Docker) |
+| `backend/tests/GroceryList.IntegrationTests` (50 tests) | Full HTTP pipeline against a real SQL Server: auth, authorization (401 everywhere), CRUD, ownership (404 for other users), persistence and unique indexes, OpenAPI document and Scalar page | xUnit, `WebApplicationFactory`, Testcontainers (SQL Server 2022; needs Docker) |
 | `frontend` (41 tests) | `httpClient`, `useGroceryList` (optimistic update and rollback, double-click guard), view filters, tabs keyboard support, focus after toggling, `LoginPage`, `ProtectedRoute` | Vitest, Testing Library, jsdom |
 
 ---

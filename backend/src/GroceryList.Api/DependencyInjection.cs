@@ -76,6 +76,7 @@ public static class DependencyInjection
 
         services.AddOpenApi(options =>
         {
+            options.AddDocumentTransformer<ApiInfoTransformer>();
             options.AddDocumentTransformer<BearerSecurityTransformer>();
             options.AddOperationTransformer<BearerSecurityTransformer>();
         });

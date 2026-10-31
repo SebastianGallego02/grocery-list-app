@@ -29,8 +29,13 @@ if (app.Configuration.GetValue<bool>("OpenApi:Enabled"))
 {
     app.MapOpenApi().AllowAnonymous();
     app.MapScalarApiReference(options => options
-        .WithTitle("Grocery List API")
-        .AddPreferredSecuritySchemes(BearerSecurityTransformer.SchemeName))
+        .WithTitle(ApiInfoTransformer.Title)
+        .AddPreferredSecuritySchemes(BearerSecurityTransformer.SchemeName)
+        // Hide Scalar's promotional features: the developer toolbar ("Deploy", "Generate SDK"),
+        // the AI chat ("Ask AI") and the MCP integration.
+        .HideDeveloperTools()
+        .DisableAgent()
+        .DisableMcp())
         .AllowAnonymous();
 }
 
