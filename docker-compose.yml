@@ -20,5 +20,24 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  api:
+    build:
+      context: ./backend
+    container_name: grocerylist-api
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      # Production environment: no Development appsettings, no exception details in responses.
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__GroceryListDb: "Server=sqlserver,1433;Database=GroceryList;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True"
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env (see .env.example)}
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      Database__ApplyMigrationsOnStartup: "true"
+      OpenApi__Enabled: "true"
+    ports:
+      - "${API_PORT:-8080}:8080"
+    restart: unless-stopped
+
 volumes:
   sqlserver-data:
