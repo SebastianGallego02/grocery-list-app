@@ -16,16 +16,22 @@ Company stack: C#, React, TypeScript, Sass, REST/JSON, Git, Azure (desirable).
 8. Logout
 9. No session = no products visible; login is mandatory
 
+## Repository layout
+- `backend/`: .NET solution (`GroceryList.slnx`), `src/` and `tests/`.
+- `frontend/`: React app.
+- `docs/`: project documentation.
+- `docker-compose.yml`, `.env.example`: local infrastructure (SQL Server).
+
 ## Architecture (Clean Architecture, pragmatic)
-- `src/GroceryList.Domain`: entities (User, GroceryItem), invariants. NO dependencies.
-- `src/GroceryList.Application`: use-case services, Result pattern, DTOs, ports (interfaces).
+- `backend/src/GroceryList.Domain`: entities (User, GroceryItem), invariants. NO dependencies.
+- `backend/src/GroceryList.Application`: use-case services, Result pattern, DTOs, ports (interfaces).
   Depends only on Domain.
-- `src/GroceryList.Infrastructure`: EF Core + SQL Server, repositories, JWT, password hashing.
+- `backend/src/GroceryList.Infrastructure`: EF Core + SQL Server, repositories, JWT, password hashing.
   Implements Application interfaces.
-- `src/GroceryList.Api`: ASP.NET Core endpoints, auth config, IExceptionHandler + ProblemDetails,
+- `backend/src/GroceryList.Api`: ASP.NET Core endpoints, auth config, IExceptionHandler + ProblemDetails,
   OpenAPI. Composition root (only place that references Infrastructure).
-- `tests/GroceryList.UnitTests`, `tests/GroceryList.IntegrationTests` (xUnit).
-- `web/`: React + TypeScript + Vite + Sass (feature-based folders).
+- `backend/tests/GroceryList.UnitTests`, `backend/tests/GroceryList.IntegrationTests` (xUnit).
+- `frontend/`: React + TypeScript + Vite + Sass (feature-based folders).
 
 Dependency rule: dependencies point inward. Infrastructure → Application → Domain. Never the reverse.
 
@@ -45,7 +51,9 @@ Dependency rule: dependencies point inward. Infrastructure → Application → D
 
 ## Environment
 - Windows + PowerShell (use `;` to chain commands, no bash globs).
-- After each change: `dotnet build` and `dotnet test` must pass before committing.
+- Run dotnet commands from `backend/` and npm commands from `frontend/`.
+- After each change: `dotnet build` and `dotnet test` must pass before committing
+  (and `npm run build` for frontend changes).
 
 ## Working agreement
 - Explain the plan briefly before large changes.
