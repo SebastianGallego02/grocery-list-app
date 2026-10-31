@@ -18,7 +18,9 @@
     color $transition-fast;
   @include focus-ring;
 
-  &:disabled {
+  // aria-disabled keeps the button focusable (e.g. while its row's request is pending).
+  &:disabled,
+  &[aria-disabled='true'] {
     cursor: not-allowed;
     opacity: 0.6;
   }
@@ -43,7 +45,7 @@
   background: $color-primary;
   color: $color-on-primary;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background: $color-primary-hover;
   }
 }
@@ -52,7 +54,7 @@
   background: $color-accent-strong;
   color: $color-on-accent;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background: $color-accent-strong-hover;
   }
 }
@@ -62,7 +64,7 @@
   border-color: $color-border-strong;
   color: $color-text;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     border-color: $color-text;
   }
 }
@@ -71,7 +73,7 @@
   background: transparent;
   color: $color-muted;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background: $color-surface-sunken;
     color: $color-text;
   }
@@ -81,7 +83,7 @@
   background: transparent;
   color: $color-error;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background: $color-error-surface;
     color: $color-error-hover;
   }
@@ -94,7 +96,7 @@
   color: $color-on-primary;
   @include focus-ring($color-focus-on-dark);
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled='true']) {
     background: rgba($color-on-primary, 0.12);
   }
 }

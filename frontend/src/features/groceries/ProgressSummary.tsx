@@ -12,8 +12,7 @@ export function ProgressSummary({ inBasket, total }: ProgressSummaryProps) {
 
   return (
     <div className={styles.summary}>
-      {/* Polite live region: while shopping, each toggle announces the new count. */}
-      <p className={styles.text} aria-live="polite">
+      <p className={styles.text}>
         <strong>{inBasket}</strong> of <strong>{total}</strong> in basket
         {isDone && <span className={styles.done}> · All done!</span>}
       </p>

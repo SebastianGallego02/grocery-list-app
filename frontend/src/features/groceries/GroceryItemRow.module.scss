@@ -33,11 +33,11 @@
   cursor: pointer;
   @include focus-ring;
 
-  &:disabled {
+  &[aria-disabled='true'] {
     cursor: not-allowed;
   }
 
-  &:hover:not(:disabled) .check {
+  &:hover:not([aria-disabled='true']) .check {
     border-color: $color-primary;
   }
 }

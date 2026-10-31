@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ApiError } from '../../api/httpClient'
 import * as groceriesApi from './groceriesApi'
 import { GroceryListPage } from './GroceryListPage'
 import type { GroceryItem } from './types'
@@ -11,6 +12,17 @@ const api = vi.mocked(groceriesApi)
 
 function item(name: string, isInBasket = false): GroceryItem {
   return { id: `${name}-id`, name, quantity: 1, isInBasket, createdAtUtc: '2026-01-01T12:00:00Z' }
+}
+
+/** A promise the test settles by hand, to observe the page while a request is pending. */
+function deferred() {
+  let resolve!: () => void
+  let reject!: (reason: unknown) => void
+  const promise = new Promise<void>((res, rej) => {
+    resolve = res
+    reject = rej
+  })
+  return { promise, resolve, reject }
 }
 
 async function renderPage(items: GroceryItem[], path = '/') {
@@ -113,5 +125,79 @@ describe('GroceryListPage view filter', () => {
     await renderPage([item('Bread')], '/?view=in-basket')
 
     expect(screen.getByRole('heading', { name: 'Nothing in your basket yet.' })).toBeTruthy()
+  })
+})
+
+describe('GroceryListPage focus after toggling in a filtered view', () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
+  function toggle(name: string) {
+    return screen.getByRole('button', { name })
+  }
+
+  it('moves focus to the next row and announces the move', async () => {
+    const user = userEvent.setup()
+    api.putInBasket.mockResolvedValue(undefined)
+    await renderPage([item('Milk'), item('Bread'), item('Eggs')])
+
+    await user.click(toggle('Put in basket Bread'))
+
+    expect(visibleProducts()).toEqual(['Milk', 'Eggs'])
+    expect(document.activeElement).toBe(toggle('Put in basket Eggs'))
+    expect(screen.getByText('Bread moved to basket')).toBeTruthy()
+  })
+
+  it('moves focus to the previous row when the last row leaves the view', async () => {
+    const user = userEvent.setup()
+    api.putInBasket.mockResolvedValue(undefined)
+    await renderPage([item('Milk'), item('Bread')])
+
+    await user.click(toggle('Put in basket Bread'))
+
+    expect(document.activeElement).toBe(toggle('Put in basket Milk'))
+  })
+
+  it('moves focus to the empty-state heading when the view becomes empty', async () => {
+    const user = userEvent.setup()
+    api.removeFromBasket.mockResolvedValue(undefined)
+    await renderPage([item('Eggs', true)], '/?view=in-basket')
+
+    await user.click(toggle('Put back Eggs'))
+
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Nothing in your basket yet.' }))
+    expect(screen.getByText('Eggs moved back to your list')).toBeTruthy()
+    expect(screen.getByRole('tab', { name: 'In basket (0)' })).toBeTruthy()
+  })
+
+  it('keeps focus on the toggled item in "All" after its row moves', async () => {
+    const user = userEvent.setup()
+    api.putInBasket.mockResolvedValue(undefined)
+    await renderPage([item('Milk'), item('Bread')], '/?view=all')
+
+    await user.click(toggle('Put in basket Milk'))
+
+    expect(visibleProducts()).toEqual(['Bread', 'Milk'])
+    expect(document.activeElement).toBe(toggle('Put back Milk'))
+  })
+
+  it('brings the item back into its view and shows the error when the API fails', async () => {
+    const user = userEvent.setup()
+    const failure = deferred()
+    api.putInBasket.mockReturnValue(failure.promise)
+    await renderPage([item('Milk'), item('Bread')])
+
+    await user.click(toggle('Put in basket Milk'))
+    // Optimistic: it left "To buy" straight away.
+    expect(visibleProducts()).toEqual(['Bread'])
+    expect(screen.getByRole('tab', { name: 'In basket (1)' })).toBeTruthy()
+
+    failure.reject(new ApiError(500, 'Server.UnexpectedError', 'Something went wrong on our side.'))
+
+    expect((await screen.findByRole('alert')).textContent).toContain('Could not put “Milk” in the basket.')
+    expect(visibleProducts()).toEqual(['Milk', 'Bread'])
+    expect(screen.getByRole('tab', { name: 'To buy (2)', selected: true })).toBeTruthy()
+    expect(screen.getByRole('tab', { name: 'In basket (0)' })).toBeTruthy()
   })
 })
