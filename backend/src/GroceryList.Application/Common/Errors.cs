@@ -39,6 +39,13 @@ public static class Errors
             Error.Unauthorized("Auth.InvalidCredentials", "The username or password is incorrect.");
     }
 
+    public static class Users
+    {
+        // The token is valid but its user no longer exists: treat the caller as unauthenticated.
+        public static readonly Error CurrentUserNotFound =
+            Error.Unauthorized("Users.CurrentUserNotFound", "The authenticated user no longer exists.");
+    }
+
     public static class GroceryItems
     {
         public static readonly Error NameRequired =
