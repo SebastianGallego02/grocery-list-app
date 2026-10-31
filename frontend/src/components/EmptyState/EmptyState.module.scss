@@ -26,6 +26,8 @@
 .title {
   font-size: $font-size-md;
   font-weight: $font-weight-semibold;
+  border-radius: $radius-sm;
+  @include focus-ring;
 }
 
 .description {

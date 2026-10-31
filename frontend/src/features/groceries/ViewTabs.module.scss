@@ -1,0 +1,55 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+// Light track with a white pill for the selected tab. Mobile-first: the three tabs share the
+// width equally; on wider screens they size to their labels.
+.tablist {
+  display: flex;
+  gap: $space-1;
+  padding: $space-1;
+  border-radius: $radius-pill;
+  background: $color-surface-sunken;
+
+  @include from-md {
+    align-self: flex-start;
+  }
+}
+
+.tab {
+  flex: 1 1 0;
+  min-height: $touch-target;
+  padding: $space-2 $space-3;
+  border: 0;
+  border-radius: $radius-pill;
+  background: transparent;
+  color: $color-muted;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color $transition-fast,
+    color $transition-fast,
+    box-shadow $transition-fast;
+  @include focus-ring-accent;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &[aria-selected='true'] {
+    background: $color-surface;
+    color: $color-primary;
+    box-shadow: $shadow-sm;
+  }
+
+  @include from-md {
+    flex: 0 0 auto;
+    padding: $space-2 $space-5;
+    font-size: $font-size-base;
+  }
+}
+
+.count {
+  font-weight: $font-weight-regular;
+}
