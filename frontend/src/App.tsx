@@ -1,7 +1,13 @@
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './features/auth/AuthProvider'
+import { appRoutes } from './routes/routes'
+
+const router = createBrowserRouter(appRoutes)
+
 export default function App() {
   return (
-    <main>
-      <h1>Grocery List</h1>
-    </main>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }

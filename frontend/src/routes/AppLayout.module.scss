@@ -1,0 +1,43 @@
+@use '../styles/variables' as *;
+
+.header {
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.inner,
+.main {
+  max-width: $content-max-width;
+  margin: 0 auto;
+  padding: $space-3 $space-4;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.brand {
+  color: $color-primary;
+  font-weight: 700;
+  font-size: $font-size-lg;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.user {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+}
+
+.main {
+  padding-top: $space-6;
+  padding-bottom: $space-8;
+}

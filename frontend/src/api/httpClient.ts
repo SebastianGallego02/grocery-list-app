@@ -57,6 +57,11 @@ export function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError'
 }
 
+/** A message that is safe to show: the API's detail for ApiErrors, a generic text otherwise. */
+export function getErrorMessage(error: unknown, fallback = 'Something went wrong. Please try again.'): string {
+  return error instanceof ApiError ? error.message : fallback
+}
+
 const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '')
 
 async function request<T>(method: string, path: string, options: RequestOptions = {}): Promise<T> {
