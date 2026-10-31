@@ -21,6 +21,14 @@ public sealed class GroceryItemService(
         return Result.Success<IReadOnlyList<GroceryItemResponse>>(items.Select(item => item.ToResponse()).ToList());
     }
 
+    public async Task<Result<GroceryItemResponse>> GetMyItemAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var item = await groceryItemRepository.GetByIdForUserAsync(id, currentUser.UserId, cancellationToken);
+        return item is null
+            ? Errors.GroceryItems.NotFound
+            : item.ToResponse();
+    }
+
     public async Task<Result<GroceryItemResponse>> AddAsync(
         AddGroceryItemRequest request,
         CancellationToken cancellationToken)

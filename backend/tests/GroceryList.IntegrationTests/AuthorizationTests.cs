@@ -18,6 +18,7 @@ public sealed class AuthorizationTests(GroceryListApiFactory factory)
         {
             { "GET", "/api/users/me" },
             { "GET", "/api/grocery-items" },
+            { "GET", $"/api/grocery-items/{id}" },
             { "POST", "/api/grocery-items" },
             { "DELETE", $"/api/grocery-items/{id}" },
             { "PUT", $"/api/grocery-items/{id}/basket" },

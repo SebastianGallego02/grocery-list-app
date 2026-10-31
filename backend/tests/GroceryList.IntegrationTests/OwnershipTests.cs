@@ -24,6 +24,18 @@ public sealed class OwnershipTests(GroceryListApiFactory factory)
     }
 
     [Fact]
+    public async Task UserA_CannotReadUserBsItem()
+    {
+        var alice = await factory.RegisterUserAsync();
+        var bob = await factory.RegisterUserAsync();
+        var bobItem = await bob.Client.AddItemAsync("Eggs");
+
+        var response = await alice.Client.GetAsync($"/api/grocery-items/{bobItem.Id}");
+
+        await response.AssertProblemAsync(HttpStatusCode.NotFound, "GroceryItems.NotFound");
+    }
+
+    [Fact]
     public async Task UserA_CannotRemoveUserBsItem()
     {
         var alice = await factory.RegisterUserAsync();

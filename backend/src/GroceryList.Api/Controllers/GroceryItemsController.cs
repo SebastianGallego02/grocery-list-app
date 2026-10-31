@@ -23,6 +23,20 @@ public sealed class GroceryItemsController(GroceryItemService groceryItemService
             : this.Problem(result.Error);
     }
 
+    /// <summary>
+    /// One of the current user's items; the target of the Location header returned by <see cref="Add"/>.
+    /// </summary>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType<GroceryItemResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetMine(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await groceryItemService.GetMyItemAsync(id, cancellationToken);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : this.Problem(result.Error);
+    }
+
     [HttpPost]
     [ProducesResponseType<GroceryItemResponse>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

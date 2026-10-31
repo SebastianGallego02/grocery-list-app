@@ -48,6 +48,7 @@ The examples below are real responses from the running API; ids, tokens and trac
 | `POST` | `/api/auth/login` | anonymous | `200` `AuthResponse` | `400`, `401` |
 | `GET` | `/api/users/me` | bearer | `200` `UserResponse` | `401` |
 | `GET` | `/api/grocery-items` | bearer | `200` `GroceryItemResponse[]` | `401` |
+| `GET` | `/api/grocery-items/{id}` | bearer | `200` `GroceryItemResponse` | `401`, `404` |
 | `POST` | `/api/grocery-items` | bearer | `201` `GroceryItemResponse`, `Location: /api/grocery-items/{id}` | `400`, `401`, `409` |
 | `DELETE` | `/api/grocery-items/{id}` | bearer | `204` | `401`, `404` |
 | `PUT` | `/api/grocery-items/{id}/basket` | bearer | `204` | `401`, `404` |
@@ -218,6 +219,32 @@ The current user's items, ordered by creation time, then name. No pagination.
 |---|---|---|
 | 401 | `Auth.Unauthenticated` | no or invalid token |
 
+### `GET /api/grocery-items/{id}`
+
+One of the current user's items. It is also the target of the `Location` header returned when an item is created.
+
+```http
+GET /api/grocery-items/01a19462-e3b3-7abc-a1ac-098ef61d3583
+Authorization: Bearer eyJhbGciOi…
+```
+
+```http
+HTTP/1.1 200 OK
+
+{
+  "id": "01a19462-e3b3-7abc-a1ac-098ef61d3583",
+  "name": "Milk",
+  "quantity": 2,
+  "isInBasket": false,
+  "createdAtUtc": "2026-10-31T23:54:31.2191444+00:00"
+}
+```
+
+| Status | `code` | When |
+|---|---|---|
+| 401 | `Auth.Unauthenticated` | no or invalid token |
+| 404 | `GroceryItems.NotFound` | no such item **or it belongs to another user** |
+
 ### `POST /api/grocery-items`
 
 | Field | Rules |
@@ -246,8 +273,8 @@ Location: /api/grocery-items/01a19448-e1a5-7ee3-8a82-c81f9cdc685d
 }
 ```
 
-New items start with `isInBasket: false`. The `Location` URL identifies the item, but there is no
-`GET /api/grocery-items/{id}` yet ([known issues](known-issues.md)).
+New items start with `isInBasket: false`. The `Location` header points to the new item
+([`GET /api/grocery-items/{id}`](#get-apigrocery-itemsid)).
 
 | Status | `code` | When |
 |---|---|---|

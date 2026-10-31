@@ -69,6 +69,38 @@ public sealed class GroceryItemServiceTests
         await _repository.DidNotReceive().GetAllForUserAsync(OtherUserId, Arg.Any<CancellationToken>());
     }
 
+    // ---------- GetMyItem ----------
+
+    [Fact]
+    public async Task GetMyItem_OwnItem_ReturnsItMapped()
+    {
+        var milk = GivenItemOwnedBy(CurrentUserId, "Milk", quantity: 2);
+
+        var result = await _sut.GetMyItemAsync(milk.Id, CancellationToken.None);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(new GroceryItemResponse(milk.Id, "Milk", 2, false, Now), result.Value);
+    }
+
+    [Fact]
+    public async Task GetMyItem_UnknownItem_ReturnsNotFound()
+    {
+        var result = await _sut.GetMyItemAsync(Guid.NewGuid(), CancellationToken.None);
+
+        Assert.Equal(Errors.GroceryItems.NotFound, result.Error);
+    }
+
+    [Fact]
+    public async Task GetMyItem_AnotherUsersItem_ReturnsNotFound()
+    {
+        var foreignItem = GivenItemOwnedBy(OtherUserId, "Secret item");
+
+        var result = await _sut.GetMyItemAsync(foreignItem.Id, CancellationToken.None);
+
+        Assert.Equal(Errors.GroceryItems.NotFound, result.Error);
+        await _repository.Received(1).GetByIdForUserAsync(foreignItem.Id, CurrentUserId, Arg.Any<CancellationToken>());
+    }
+
     // ---------- Add ----------
 
     [Fact]

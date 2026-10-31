@@ -24,7 +24,6 @@ change for production. Items are grouped by area. "Planned" means not implemente
 | Issue | Impact | Future work |
 |---|---|---|
 | **One validation error at a time** | Validation stops at the first failing rule (`Result` carries one `Error`). A request with several invalid fields needs several round trips to fix. The SPA validates all fields client-side first, which hides this in practice. | Let validation errors carry a list (field → code, message), returned like `ValidationProblemDetails.errors`. |
-| **`Location` points to a missing endpoint** | `POST /api/grocery-items` returns `Location: /api/grocery-items/{id}`, but there is no `GET /api/grocery-items/{id}`. | Add `GET /api/grocery-items/{id}` (owner-filtered, 404 otherwise). |
 | **Items cannot be edited** | Name and quantity are fixed after creation; the user removes and re-adds. | `PATCH /api/grocery-items/{id}` for name and quantity ([ADR 0007](adr/0007-basket-as-sub-resource.md)). |
 | **No pagination** | `GET /api/grocery-items` returns the whole list. Fine for a personal grocery list. | Paging if lists became large or shared. |
 | **No API versioning** | Only one version, `v1` in the OpenAPI document. Breaking changes would affect the SPA directly. | URL or header versioning when a second client appears. |

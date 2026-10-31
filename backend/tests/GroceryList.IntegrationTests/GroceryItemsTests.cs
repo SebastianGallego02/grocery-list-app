@@ -140,11 +140,26 @@ public sealed class GroceryItemsTests(GroceryListApiFactory factory)
     }
 
     [Fact]
+    public async Task Add_LocationHeader_PointsToTheCreatedItem()
+    {
+        var user = await factory.RegisterUserAsync();
+        var add = await user.Client.PostAsJsonAsync("/api/grocery-items", new AddGroceryItemRequest("Milk", 2));
+        var created = await add.Content.ReadFromJsonAsync<GroceryItemResponse>();
+
+        var response = await user.Client.GetAsync(add.Headers.Location);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(created, await response.Content.ReadFromJsonAsync<GroceryItemResponse>());
+    }
+
+    [Fact]
     public async Task OperationsOnUnknownItem_Return404()
     {
         var user = await factory.RegisterUserAsync();
         var unknownId = Guid.NewGuid();
 
+        await (await user.Client.GetAsync($"/api/grocery-items/{unknownId}"))
+            .AssertProblemAsync(HttpStatusCode.NotFound, "GroceryItems.NotFound");
         await (await user.Client.DeleteAsync($"/api/grocery-items/{unknownId}"))
             .AssertProblemAsync(HttpStatusCode.NotFound, "GroceryItems.NotFound");
         await (await user.Client.PutAsync($"/api/grocery-items/{unknownId}/basket", content: null))

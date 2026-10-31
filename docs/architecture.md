@@ -27,7 +27,7 @@ product as picked up ("in the basket") or put it back. Nobody can see or change 
 |---|---|---|---|---|
 | 1 | Register with username, full name and password | `POST /api/auth/register` → 201 + token | `/register` (`RegisterPage`) | `AuthTests`, `AuthServiceTests` |
 | 2 | Log in with username and password | `POST /api/auth/login` → 200 + token | `/login` (`LoginPage`) | `AuthTests`, `AuthServiceTests`, `LoginPage.test.tsx` |
-| 3 | See only my own list | `GET /api/grocery-items` (filtered by the token's user) | `/` (`GroceryListPage`) | `OwnershipTests`, `GroceryItemServiceTests` |
+| 3 | See only my own list | `GET /api/grocery-items` and `GET /api/grocery-items/{id}` (filtered by the token's user) | `/` (`GroceryListPage`) | `OwnershipTests`, `GroceryItemServiceTests` |
 | 4 | Add a product | `POST /api/grocery-items` → 201 | `AddItemForm` (name + quantity stepper) | `GroceryItemsTests`, `useGroceryList.test.ts` |
 | 5 | Remove a product | `DELETE /api/grocery-items/{id}` → 204 | Remove (trash) button on each row | `GroceryItemsTests`, `useGroceryList.test.ts` |
 | 6 | Tag a product (put in basket) | `PUT /api/grocery-items/{id}/basket` → 204 | Round toggle on each row (optimistic) | `GroceryItemsTests`, `useGroceryList.test.ts`, `GroceryListPage.test.tsx` |
@@ -513,8 +513,8 @@ flowchart LR
 
 | Suite | Scope | Tooling |
 |---|---|---|
-| `backend/tests/GroceryList.UnitTests` (124 tests) | Domain invariants, `Result`, services with fakes (`AuthService`, `GroceryItemService`, `UserService`), JWT options and tokens, password hasher, DI validation | xUnit |
-| `backend/tests/GroceryList.IntegrationTests` (50 tests) | Full HTTP pipeline against a real SQL Server: auth, authorization (401 everywhere), CRUD, ownership (404 for other users), persistence and unique indexes, OpenAPI document and Scalar page | xUnit, `WebApplicationFactory`, Testcontainers (SQL Server 2022; needs Docker) |
+| `backend/tests/GroceryList.UnitTests` (127 tests) | Domain invariants, `Result`, services with fakes (`AuthService`, `GroceryItemService`, `UserService`), JWT options and tokens, password hasher, DI validation | xUnit |
+| `backend/tests/GroceryList.IntegrationTests` (54 tests) | Full HTTP pipeline against a real SQL Server: auth, authorization (401 everywhere), CRUD, ownership (404 for other users), persistence and unique indexes, OpenAPI document and Scalar page | xUnit, `WebApplicationFactory`, Testcontainers (SQL Server 2022; needs Docker) |
 | `frontend` (41 tests) | `httpClient`, `useGroceryList` (optimistic update and rollback, double-click guard), view filters, tabs keyboard support, focus after toggling, `LoginPage`, `ProtectedRoute` | Vitest, Testing Library, jsdom |
 
 ---

@@ -33,7 +33,7 @@ comes from `ICurrentUser`.
 
 ## Consequences
 
-- **Testable:** business rules are unit-tested with fakes (124 unit tests), and the HTTP pipeline is
+- **Testable:** business rules are unit-tested with fakes (127 unit tests), and the HTTP pipeline is
   covered by integration tests against a real SQL Server.
 - **Easy to follow:** the code has few layers of indirection. A request can be read top to bottom:
   controller → service → repository.
