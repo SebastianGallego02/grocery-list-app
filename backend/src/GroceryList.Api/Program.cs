@@ -35,7 +35,9 @@ if (app.Configuration.GetValue<bool>("OpenApi:Enabled"))
         // the AI chat ("Ask AI") and the MCP integration.
         .HideDeveloperTools()
         .DisableAgent()
-        .DisableMcp())
+        .DisableMcp()
+        // A demo should not send usage data to third parties.
+        .DisableTelemetry())
         .AllowAnonymous();
 }
 

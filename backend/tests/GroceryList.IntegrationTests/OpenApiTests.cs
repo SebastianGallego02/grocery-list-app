@@ -30,7 +30,7 @@ public sealed class OpenApiTests(GroceryListApiFactory factory)
     }
 
     [Fact]
-    public async Task ScalarPage_HidesPromotionalFeatures()
+    public async Task ScalarPage_HidesPromotionalFeaturesAndDisablesTelemetry()
     {
         var response = await CreateClientWithOpenApi().GetAsync("/scalar/");
 
@@ -40,6 +40,7 @@ public sealed class OpenApiTests(GroceryListApiFactory factory)
         Assert.Contains("\"showDeveloperTools\":\"never\"", html);
         Assert.Contains("\"agent\":{\"disabled\":true}", html);
         Assert.Contains("\"mcp\":{\"disabled\":true}", html);
+        Assert.Contains("\"telemetry\":false", html);
     }
 
     [Fact]
