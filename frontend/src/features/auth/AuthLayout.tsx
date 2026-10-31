@@ -43,6 +43,14 @@ export function AuthLayout({ title, children, footer }: AuthLayoutProps) {
       </header>
       <main className={styles.panel}>
         <div className={styles.content}>
+          {/* Visual repeat of the brand next to the form; hidden from screen readers, which
+              already read it in the hero. */}
+          <p className={styles.logo} aria-hidden="true">
+            <span className={styles.mark}>
+              <BasketIcon />
+            </span>
+            Grocery List
+          </p>
           <h1 className={styles.title}>{title}</h1>
           {children}
           <p className={styles.footer}>{footer}</p>

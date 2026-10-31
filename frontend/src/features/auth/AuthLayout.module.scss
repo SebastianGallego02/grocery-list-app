@@ -142,6 +142,22 @@
   max-width: 24rem;
 }
 
+// Only in the split layout: below it, the banner right above the form already shows the brand.
+.logo {
+  display: none;
+
+  @include from-lg {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-bottom: $space-3;
+    color: $color-primary;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+  }
+}
+
 .title {
   color: $color-primary;
   font-size: $font-size-xl;
