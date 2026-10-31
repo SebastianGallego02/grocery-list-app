@@ -1,18 +1,77 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
+// Mobile-first: a short hero banner above the form. From the large breakpoint: a two-column
+// grid, image ~70% on the left and the form ~30% on the right, never narrower than 22.5rem.
 .page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: $space-6;
   min-height: 100vh;
-  padding: $space-10 $space-4;
-  // Primary band behind the brand; the card overlaps it on the light background.
-  background: linear-gradient($color-primary 0, $color-primary 12rem, $color-background 12rem);
+  background: $color-surface;
+
+  @include from-lg {
+    display: grid;
+    grid-template-columns: 7fr minmax(22.5rem, 3fr);
+  }
+}
+
+// The box has a fixed size before the image loads (no layout shift), and the navy background
+// shows if the image is slow or fails.
+.hero {
+  position: relative;
+  height: clamp(8rem, 24vh, 30vh);
+  overflow: hidden;
+  background: $color-primary;
+
+  @include from-lg {
+    // Stays in view if the form panel is taller than the screen (e.g. register with errors).
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+  }
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Navy gradient under the text. The darkest part, where the text sits, keeps white text above
+// 9:1 even over a white area of the photo; the top fades out so the image still shows.
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: $space-1;
+  padding: $space-5 $space-4;
+  background: linear-gradient(
+    to top,
+    rgba($color-primary, 0.9) 0%,
+    rgba($color-primary, 0.85) 55%,
+    rgba($color-primary, 0.55) 100%
+  );
+  color: $color-on-primary;
 
   @include from-md {
-    padding-top: $space-12;
+    padding: $space-6 $space-8;
+  }
+
+  @include from-lg {
+    gap: $space-3;
+    padding: $space-12;
+    background: linear-gradient(
+      to top,
+      rgba($color-primary, 0.92) 0%,
+      rgba($color-primary, 0.85) 30%,
+      rgba($color-primary, 0.35) 70%,
+      rgba($color-primary, 0.15) 100%
+    );
   }
 }
 
@@ -20,37 +79,71 @@
   display: flex;
   align-items: center;
   gap: $space-2;
-  color: $color-on-primary;
   font-size: $font-size-lg;
   font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+
+  @include from-lg {
+    gap: $space-3;
+    font-size: $font-size-xl;
+  }
 }
 
+// Decorative brand mark: the orange is a background behind an icon, never behind text.
 .mark {
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: $radius-sm;
   background: $color-accent;
   color: $color-primary;
-}
 
-.card {
-  @include card;
-  width: 100%;
-  max-width: 26rem;
-  padding: $space-6;
-  display: flex;
-  flex-direction: column;
-  gap: $space-5;
-  box-shadow: $shadow-lg;
-
-  @include from-md {
-    padding: $space-8;
+  @include from-lg {
+    width: 3rem;
+    height: 3rem;
+    font-size: $font-size-xl;
   }
 }
 
+.tagline {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+
+  @include from-lg {
+    max-width: 28rem;
+    font-size: $font-size-lg;
+  }
+}
+
+.panel {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: $space-8 $space-4 $space-10;
+  background: $color-surface;
+
+  @include from-md {
+    padding: $space-10 $space-8;
+  }
+
+  @include from-lg {
+    align-items: center;
+    padding: $space-12 $space-10;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  width: 100%;
+  max-width: 24rem;
+}
+
 .title {
+  color: $color-primary;
   font-size: $font-size-xl;
   line-height: $line-height-tight;
 }
