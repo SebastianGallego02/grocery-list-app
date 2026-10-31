@@ -2,7 +2,7 @@
 @use '../../styles/mixins' as *;
 
 // Light track with a white pill for the selected tab. Mobile-first: the three tabs share the
-// width equally; on wider screens they size to their labels.
+// width equally; on wider screens they size to their labels and are centred.
 .tablist {
   display: flex;
   gap: $space-1;
@@ -11,7 +11,7 @@
   background: $color-surface-sunken;
 
   @include from-md {
-    align-self: flex-start;
+    align-self: center;
   }
 }
 
