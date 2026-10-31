@@ -12,7 +12,6 @@ namespace GroceryList.Api.Controllers;
 [ApiController]
 [Route("api/auth")]
 [AllowAnonymous]
-[Produces("application/json")]
 public sealed class AuthController(AuthService authService) : ControllerBase
 {
     [HttpPost("register")]

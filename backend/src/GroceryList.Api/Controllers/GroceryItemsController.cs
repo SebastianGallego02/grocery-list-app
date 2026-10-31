@@ -9,7 +9,6 @@ namespace GroceryList.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/grocery-items")]
-[Produces("application/json")]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 public sealed class GroceryItemsController(GroceryItemService groceryItemService) : ControllerBase
 {

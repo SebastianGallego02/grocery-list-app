@@ -6,7 +6,6 @@ namespace GroceryList.Api.Controllers;
 
 [ApiController]
 [Route("api/users")]
-[Produces("application/json")]
 public sealed class UsersController(UserService userService) : ControllerBase
 {
     [HttpGet("me")]
