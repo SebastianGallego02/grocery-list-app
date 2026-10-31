@@ -1,6 +1,57 @@
-@GroceryList.Api_HostAddress = http://localhost:5079
+@baseUrl = http://localhost:5079
+# Paste the "token" from the register or login response here.
+@token = <paste-token-here>
+# Paste an item "id" from the add or list response here.
+@itemId = 00000000-0000-0000-0000-000000000000
 
-GET {{GroceryList.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
 
-###
+{
+  "username": "alice",
+  "fullName": "Alice Smith",
+  "password": "Sup3rSecret!"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "alice",
+  "password": "Sup3rSecret!"
+}
+
+### Current user
+GET {{baseUrl}}/api/users/me
+Authorization: Bearer {{token}}
+
+### My grocery list
+GET {{baseUrl}}/api/grocery-items
+Authorization: Bearer {{token}}
+
+### Add an item
+POST {{baseUrl}}/api/grocery-items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "quantity": 2
+}
+
+### Put in basket
+PUT {{baseUrl}}/api/grocery-items/{{itemId}}/basket
+Authorization: Bearer {{token}}
+
+### Put back (remove from basket)
+DELETE {{baseUrl}}/api/grocery-items/{{itemId}}/basket
+Authorization: Bearer {{token}}
+
+### Remove item
+DELETE {{baseUrl}}/api/grocery-items/{{itemId}}
+Authorization: Bearer {{token}}
+
+### Health
+GET {{baseUrl}}/health
