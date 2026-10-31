@@ -1,6 +1,7 @@
 import { Navigate, type RouteObject } from 'react-router-dom'
 import { LoginPage } from '../features/auth/LoginPage'
 import { RegisterPage } from '../features/auth/RegisterPage'
+import { GroceryListPage } from '../features/groceries/GroceryListPage'
 import { AnonymousRoute } from './AnonymousRoute'
 import { AppLayout } from './AppLayout'
 import { ProtectedRoute } from './ProtectedRoute'
@@ -11,7 +12,7 @@ export const appRoutes: RouteObject[] = [
     children: [
       {
         element: <AppLayout />,
-        children: [{ index: true, element: <h1>My grocery list</h1> }],
+        children: [{ index: true, element: <GroceryListPage /> }],
       },
     ],
   },

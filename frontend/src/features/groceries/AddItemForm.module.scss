@@ -1,0 +1,30 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.form {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-4;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: $space-3;
+}
+
+.name {
+  flex: 1 1 14rem;
+}
+
+.quantity {
+  flex: 0 0 6rem;
+}
+
+// Aligns the button with the inputs (below their labels).
+.submit {
+  margin-top: 1.6rem;
+}

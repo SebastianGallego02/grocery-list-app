@@ -1,0 +1,34 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.title {
+  font-size: $font-size-xl;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+}
+
+.count {
+  color: $color-text-muted;
+  font-weight: 400;
+}
+
+.items {
+  @include card;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
