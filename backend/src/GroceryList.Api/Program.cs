@@ -1,4 +1,5 @@
 using GroceryList.Api;
+using GroceryList.Api.Database;
 using GroceryList.Api.OpenApi;
 using GroceryList.Application;
 using GroceryList.Infrastructure;
@@ -12,6 +13,8 @@ builder.Services
     .AddApi(builder.Configuration);
 
 var app = builder.Build();
+
+await app.ApplyMigrationsIfEnabledAsync();
 
 app.UseExceptionHandler();
 // Turns empty error responses (401 challenge, 404 unknown route) into ProblemDetails.
@@ -34,7 +37,7 @@ if (app.Configuration.GetValue<bool>("OpenApi:Enabled"))
 app.MapHealthChecks("/health").AllowAnonymous();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
 
 // Exposes the entry point to WebApplicationFactory in the integration tests.
 public partial class Program;
