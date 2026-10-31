@@ -24,6 +24,7 @@ change for production. Items are grouped by area. "Planned" means not implemente
 | Issue | Impact | Future work |
 |---|---|---|
 | **One validation error at a time** | Validation stops at the first failing rule (`Result` carries one `Error`). A request with several invalid fields needs several round trips to fix. The SPA validates all fields client-side first, which hides this in practice. | Let validation errors carry a list (field → code, message), returned like `ValidationProblemDetails.errors`. |
+| **Partial quantities in the basket (next step)** | Tagging is all or nothing: with "Eggs × 12" the user cannot record that 6 are already in the basket. | `QuantityInBasket` (0..`Quantity`) with `IsInBasket` derived from it, and an optional `{ "quantity": n }` body on `PUT …/basket`. The [README](../README.md#how-to-add-a-new-feature) walks through it layer by layer. |
 | **Items cannot be edited** | Name and quantity are fixed after creation; the user removes and re-adds. | `PATCH /api/grocery-items/{id}` for name and quantity ([ADR 0007](adr/0007-basket-as-sub-resource.md)). |
 | **No pagination** | `GET /api/grocery-items` returns the whole list. Fine for a personal grocery list. | Paging if lists became large or shared. |
 | **No API versioning** | Only one version, `v1` in the OpenAPI document. Breaking changes would affect the SPA directly. | URL or header versioning when a second client appears. |
@@ -32,7 +33,7 @@ change for production. Items are grouped by area. "Planned" means not implemente
 
 | Issue | Impact | Future work |
 |---|---|---|
-| **Migrations on start-up** | The Docker demo applies migrations when the API starts. With several instances they would race, the app needs DDL rights, and a failed migration takes the app down. It is off by default and documented in `MigrationExtensions`. | Run an EF Core migration bundle or idempotent script as a pipeline step before deployment. |
+| **Migrations on start-up** | The Docker demo and the Development settings apply migrations when the API starts. With several instances they would race, the app needs DDL rights, and a failed migration takes the app down. It is off by default and documented in `MigrationExtensions`. | Run an EF Core migration bundle or idempotent script as a pipeline step before deployment. |
 | **v7 GUIDs still fragment on SQL Server** | SQL Server orders `uniqueidentifier` by its last six bytes, which are random in v7, so time-ordered ids do not prevent page splits on the clustered key. Negligible at this size. | Use `NEWSEQUENTIALID()`, a sequential GUID generator in SQL Server's byte order, or a non-clustered PK with a clustered `CreatedAtUtc`. |
 | **Case-insensitive uniqueness depends on the collation** | It works because the default collation is `CI`; a case-sensitive database would allow "Milk" and "milk". | Set the collation explicitly on `Username` and `Name`, or store a normalised column. |
 | **SA password must not contain `;`** | It is interpolated into the API connection string in `docker-compose.yml`. Documented in `.env.example`. | Build the connection string with quoting, or use a separate app login. |

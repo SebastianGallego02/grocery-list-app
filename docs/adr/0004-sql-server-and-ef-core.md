@@ -24,7 +24,8 @@ installation.
   Application-level `UniqueConstraintViolationException`, so a race that passes the pre-check still
   returns a clean 409.
 - **Schema changes:** EF Core migrations (`dotnet-ef`, pinned as a local tool). Applying them on
-  start-up is opt-in (`Database:ApplyMigrationsOnStartup`), and only the Docker demo enables it.
+  start-up is opt-in (`Database:ApplyMigrationsOnStartup`, `false` by default); the Docker demo
+  and the Development settings enable it.
 
 ## Consequences
 
