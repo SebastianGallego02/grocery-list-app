@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GroceryList.Infrastructure.Security;
 
@@ -24,4 +26,9 @@ public sealed class JwtOptions
 
     [Range(1, 24 * 60)]
     public int ExpirationMinutes { get; set; } = 60;
+
+    /// <summary>
+    /// The key used both to sign tokens and to validate them, so the two sides cannot drift apart.
+    /// </summary>
+    public SymmetricSecurityKey CreateSigningKey() => new(Encoding.UTF8.GetBytes(SigningKey));
 }

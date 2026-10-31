@@ -15,6 +15,9 @@ app.UseExceptionHandler();
 // Turns empty error responses (e.g. 404 for unknown routes) into ProblemDetails.
 app.UseStatusCodePages();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

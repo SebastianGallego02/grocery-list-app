@@ -1,4 +1,3 @@
-using System.Text;
 using GroceryList.Application.Abstractions;
 using GroceryList.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -20,9 +19,7 @@ internal sealed class JwtTokenService : ITokenService
     {
         _options = options.Value;
         _timeProvider = timeProvider;
-        _signingCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SigningKey)),
-            SecurityAlgorithms.HmacSha256);
+        _signingCredentials = new SigningCredentials(_options.CreateSigningKey(), SecurityAlgorithms.HmacSha256);
     }
 
     public AccessToken CreateToken(User user)

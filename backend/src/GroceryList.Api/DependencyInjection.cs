@@ -1,6 +1,8 @@
 using GroceryList.Api.Auth;
 using GroceryList.Api.Errors;
 using GroceryList.Application.Abstractions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -46,6 +48,13 @@ public static class DependencyInjection
                     });
         });
         services.AddExceptionHandler<GlobalExceptionHandler>();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+        services.ConfigureOptions<ConfigureJwtBearerOptions>();
+
+        // Secure by default: every endpoint requires a valid token unless it opts out with [AllowAnonymous].
+        services.AddAuthorizationBuilder()
+            .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, HttpCurrentUser>();
