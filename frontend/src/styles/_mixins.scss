@@ -1,9 +1,9 @@
 @use 'variables' as *;
 
 // Visible keyboard focus; mouse clicks do not show it thanks to :focus-visible.
-@mixin focus-ring {
+@mixin focus-ring($color: $color-focus) {
   &:focus-visible {
-    outline: 3px solid $color-focus;
+    outline: 3px solid $color;
     outline-offset: 2px;
   }
 }
@@ -24,6 +24,18 @@
 @mixin card {
   background: $color-surface;
   border: 1px solid $color-border;
-  border-radius: $radius;
-  box-shadow: $shadow-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+}
+
+// Square control that meets the 44px touch target, e.g. icon buttons.
+@mixin touch-target {
+  min-width: $touch-target;
+  min-height: $touch-target;
+}
+
+@mixin from-md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
 }

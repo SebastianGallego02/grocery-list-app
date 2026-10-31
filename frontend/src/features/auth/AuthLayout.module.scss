@@ -19,7 +19,7 @@
 
 .brand {
   color: $color-primary;
-  font-weight: 700;
+  font-weight: $font-weight-bold;
 }
 
 .title {
@@ -28,7 +28,7 @@
 
 .footer {
   font-size: $font-size-sm;
-  color: $color-text-muted;
+  color: $color-muted;
 }
 
 // Shared by the login and register forms.

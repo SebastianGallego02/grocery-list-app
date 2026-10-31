@@ -7,8 +7,8 @@
   justify-content: center;
   gap: $space-2;
   border: 1px solid transparent;
-  border-radius: $radius;
-  font-weight: 600;
+  border-radius: $radius-md;
+  font-weight: $font-weight-semibold;
   line-height: 1.2;
   cursor: pointer;
   transition: background-color 120ms ease, border-color 120ms ease;
@@ -44,17 +44,17 @@
   color: $color-text;
 
   &:hover:not(:disabled) {
-    border-color: $color-text-muted;
+    border-color: $color-muted;
   }
 }
 
 .danger {
   background: $color-surface;
-  border-color: $color-danger;
-  color: $color-danger;
+  border-color: $color-error;
+  color: $color-error;
 
   &:hover:not(:disabled) {
-    background: $color-danger-surface;
-    color: $color-danger-hover;
+    background: $color-error-surface;
+    color: $color-error-hover;
   }
 }

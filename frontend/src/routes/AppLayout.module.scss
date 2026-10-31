@@ -22,7 +22,7 @@
 
 .brand {
   color: $color-primary;
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   font-size: $font-size-lg;
 }
 
@@ -34,7 +34,7 @@
 
 .user {
   font-size: $font-size-sm;
-  color: $color-text-muted;
+  color: $color-muted;
 }
 
 .main {

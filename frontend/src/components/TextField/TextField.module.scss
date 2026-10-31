@@ -8,7 +8,7 @@
 }
 
 .label {
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   font-size: $font-size-sm;
 }
 
@@ -16,7 +16,7 @@
   width: 100%;
   padding: $space-3;
   border: 1px solid $color-border;
-  border-radius: $radius;
+  border-radius: $radius-md;
   background: $color-surface;
   color: $color-text;
   @include focus-ring;
@@ -27,15 +27,15 @@
 }
 
 .invalid {
-  border-color: $color-danger;
+  border-color: $color-error;
 }
 
 .hint {
   font-size: $font-size-sm;
-  color: $color-text-muted;
+  color: $color-muted;
 }
 
 .error {
   font-size: $font-size-sm;
-  color: $color-danger;
+  color: $color-error;
 }

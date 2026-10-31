@@ -4,14 +4,14 @@
   padding: $space-8 $space-4;
   text-align: center;
   border: 1px dashed $color-border;
-  border-radius: $radius;
+  border-radius: $radius-md;
 }
 
 .title {
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }
 
 .description {
   margin-top: $space-1;
-  color: $color-text-muted;
+  color: $color-muted;
 }
