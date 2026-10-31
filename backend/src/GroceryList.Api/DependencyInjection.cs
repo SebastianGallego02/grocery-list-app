@@ -1,5 +1,7 @@
 using GroceryList.Api.Auth;
 using GroceryList.Api.Errors;
+using GroceryList.Api.Health;
+using GroceryList.Api.OpenApi;
 using GroceryList.Application.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +12,11 @@ namespace GroceryList.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApi(this IServiceCollection services)
+    public const string FrontendCorsPolicy = "Frontend";
+
+    private static readonly string[] DefaultAllowedOrigins = ["http://localhost:5173"];
+
+    public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddControllers(options =>
@@ -58,6 +64,23 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, HttpCurrentUser>();
+
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() is { Length: > 0 } origins
+            ? origins
+            : DefaultAllowedOrigins;
+        services.AddCors(options => options.AddPolicy(FrontendCorsPolicy, policy => policy
+            .WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithExposedHeaders("Location")));
+
+        services.AddOpenApi(options =>
+        {
+            options.AddDocumentTransformer<BearerSecurityTransformer>();
+            options.AddOperationTransformer<BearerSecurityTransformer>();
+        });
+
+        services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
 
         return services;
     }
