@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import heroImage from '../../assets/hero-login.webp'
+import heroImage from '../../assets/auth-hero.webp'
 import { BasketIcon } from '../../components'
 import styles from './AuthLayout.module.scss'
 
