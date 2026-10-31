@@ -34,6 +34,8 @@ services:
       Jwt__SigningKey: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env (see .env.example)}
       Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:5173}
       Database__ApplyMigrationsOnStartup: "true"
+      # Demo only: exposes the OpenAPI document and the Scalar UI at http://localhost:8080/scalar so
+      # reviewers can try the API. A real production deployment would leave this disabled (the default).
       OpenApi__Enabled: "true"
     ports:
       - "${API_PORT:-8080}:8080"
