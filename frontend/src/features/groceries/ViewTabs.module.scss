@@ -7,7 +7,7 @@
   display: flex;
   gap: $space-1;
   padding: $space-1;
-  border-radius: $radius-pill;
+  border-radius: $radius-lg;
   background: $color-surface-sunken;
 
   @include from-md {
@@ -20,7 +20,7 @@
   min-height: $touch-target;
   padding: $space-2 $space-3;
   border: 0;
-  border-radius: $radius-pill;
+  border-radius: $radius-lg;
   background: transparent;
   color: $color-muted;
   font-size: $font-size-sm;
