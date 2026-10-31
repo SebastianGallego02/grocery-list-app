@@ -1,17 +1,34 @@
 @use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .empty {
-  padding: $space-8 $space-4;
+  @include card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-10 $space-6;
   text-align: center;
-  border: 1px dashed $color-border;
-  border-radius: $radius-md;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: $space-2;
+  border-radius: $radius-pill;
+  background: $color-surface-sunken;
+  color: $color-primary;
+  font-size: 1.75rem;
 }
 
 .title {
+  font-size: $font-size-md;
   font-weight: $font-weight-semibold;
 }
 
 .description {
-  margin-top: $space-1;
+  max-width: 22rem;
   color: $color-muted;
 }

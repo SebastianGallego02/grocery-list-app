@@ -1,0 +1,65 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.list {
+  @include card;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+
+  & + & {
+    border-top: 1px solid $color-border;
+  }
+
+  // Varying widths look more like real product names.
+  &:nth-child(3n) .text {
+    width: 40%;
+  }
+
+  &:nth-child(3n + 1) .text {
+    width: 65%;
+  }
+}
+
+.block {
+  display: block;
+  background: linear-gradient(90deg, $color-surface-sunken 0%, $color-background 50%, $color-surface-sunken 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.toggle {
+  flex-shrink: 0;
+  width: $touch-target;
+  height: $touch-target;
+  border-radius: $radius-pill;
+}
+
+.text {
+  width: 50%;
+  height: $space-4;
+  border-radius: $radius-sm;
+}
+
+.action {
+  flex-shrink: 0;
+  width: $touch-target;
+  height: $space-6;
+  margin-left: auto;
+  border-radius: $radius-sm;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}

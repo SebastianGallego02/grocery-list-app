@@ -4,20 +4,26 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: $space-3;
   padding: $space-3 $space-4;
   border: 1px solid $color-error;
+  border-left-width: 4px;
   border-radius: $radius-md;
   background: $color-error-surface;
   color: $color-error-hover;
 }
 
+.icon {
+  flex-shrink: 0;
+}
+
 .message {
   flex: 1 1 12rem;
+  font-weight: $font-weight-medium;
 }
 
 .actions {
   display: flex;
   gap: $space-2;
+  margin-left: auto;
 }

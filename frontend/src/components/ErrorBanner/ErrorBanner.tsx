@@ -1,4 +1,5 @@
 import { Button } from '../Button/Button'
+import { AlertIcon } from '../Icon/icons'
 import styles from './ErrorBanner.module.scss'
 
 export interface ErrorBannerProps {
@@ -11,6 +12,7 @@ export interface ErrorBannerProps {
 export function ErrorBanner({ message, onRetry, onDismiss }: ErrorBannerProps) {
   return (
     <div role="alert" className={styles.banner}>
+      <AlertIcon className={styles.icon} />
       <p className={styles.message}>{message}</p>
       {(onRetry || onDismiss) && (
         <div className={styles.actions}>
@@ -20,7 +22,7 @@ export function ErrorBanner({ message, onRetry, onDismiss }: ErrorBannerProps) {
             </Button>
           )}
           {onDismiss && (
-            <Button variant="secondary" size="small" onClick={onDismiss}>
+            <Button variant="ghost" size="small" onClick={onDismiss}>
               Dismiss
             </Button>
           )}

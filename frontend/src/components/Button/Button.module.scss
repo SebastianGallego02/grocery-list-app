@@ -6,12 +6,16 @@
   align-items: center;
   justify-content: center;
   gap: $space-2;
+  min-height: $touch-target;
   border: 1px solid transparent;
   border-radius: $radius-md;
   font-weight: $font-weight-semibold;
-  line-height: 1.2;
+  line-height: $line-height-tight;
   cursor: pointer;
-  transition: background-color 120ms ease, border-color 120ms ease;
+  transition:
+    background-color $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast;
   @include focus-ring;
 
   &:disabled {
@@ -21,12 +25,18 @@
 }
 
 .medium {
-  padding: $space-3 $space-4;
+  padding: $space-3 $space-5;
 }
 
 .small {
-  padding: $space-1 $space-3;
+  padding: $space-2 $space-3;
   font-size: $font-size-sm;
+}
+
+// Square, for icon-only buttons (the label is visually hidden text inside).
+.icon {
+  @include touch-target;
+  padding: 0;
 }
 
 .primary {
@@ -38,23 +48,53 @@
   }
 }
 
+.accent {
+  background: $color-accent-strong;
+  color: $color-on-accent;
+
+  &:hover:not(:disabled) {
+    background: $color-accent-strong-hover;
+  }
+}
+
 .secondary {
   background: $color-surface;
-  border-color: $color-border;
+  border-color: $color-border-strong;
   color: $color-text;
 
   &:hover:not(:disabled) {
-    border-color: $color-muted;
+    border-color: $color-text;
+  }
+}
+
+.ghost {
+  background: transparent;
+  color: $color-muted;
+
+  &:hover:not(:disabled) {
+    background: $color-surface-sunken;
+    color: $color-text;
   }
 }
 
 .danger {
-  background: $color-surface;
-  border-color: $color-error;
+  background: transparent;
   color: $color-error;
 
   &:hover:not(:disabled) {
     background: $color-error-surface;
     color: $color-error-hover;
+  }
+}
+
+// For the dark top bar.
+.inverse {
+  background: transparent;
+  border-color: $color-on-dark-muted;
+  color: $color-on-primary;
+  @include focus-ring($color-focus-on-dark);
+
+  &:hover:not(:disabled) {
+    background: rgba($color-on-primary, 0.12);
   }
 }

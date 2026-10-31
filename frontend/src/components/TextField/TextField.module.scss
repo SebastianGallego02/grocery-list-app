@@ -12,17 +12,44 @@
   font-size: $font-size-sm;
 }
 
-.input {
-  width: 100%;
-  padding: $space-3;
-  border: 1px solid $color-border;
+// The border lives on the wrapper so adornments sit inside it; the focus ring follows the input.
+.control {
+  display: flex;
+  align-items: center;
+  min-height: $touch-target;
+  border: 1px solid $color-border-strong;
   border-radius: $radius-md;
   background: $color-surface;
-  color: $color-text;
-  @include focus-ring;
+  transition: border-color $transition-fast;
 
-  &:focus-visible {
+  &:focus-within {
     border-color: $color-focus;
+    outline: 3px solid $color-focus;
+    outline-offset: 2px;
+  }
+
+  // Mouse clicks on an adornment button should not light up the whole field.
+  &:has(button:focus):not(:has(input:focus)) {
+    outline: none;
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  min-height: calc(#{$touch-target} - 2px);
+  padding: $space-2 $space-3;
+  border: 0;
+  border-radius: $radius-md;
+  background: transparent;
+  color: $color-text;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $color-muted;
   }
 }
 

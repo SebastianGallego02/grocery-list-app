@@ -1,8 +1,9 @@
 import type { ButtonHTMLAttributes } from 'react'
 import styles from './Button.module.scss'
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger'
-type ButtonSize = 'medium' | 'small'
+type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger' | 'inverse'
+/** Every size keeps the 44px minimum touch target; "icon" is square for icon-only buttons. */
+type ButtonSize = 'medium' | 'small' | 'icon'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
