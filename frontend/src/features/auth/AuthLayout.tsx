@@ -4,8 +4,8 @@ import { BasketIcon } from '../../components'
 import styles from './AuthLayout.module.scss'
 
 // Intrinsic size of the image, so the browser reserves its box before it loads.
-const HERO_WIDTH = 1300
-const HERO_HEIGHT = 722
+const HERO_WIDTH = 1920
+const HERO_HEIGHT = 1280
 
 interface AuthLayoutProps {
   title: string

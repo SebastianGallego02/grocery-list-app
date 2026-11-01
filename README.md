@@ -329,7 +329,7 @@ example how partial items count in the views. Commit in small Conventional Commi
   - the view filter follows the WAI-ARIA tabs pattern;
   - basket moves are announced to screen readers, and focus is managed after each toggle.
 - **Mobile first:** the auth pages switch to the split layout from 1024px.
-- **Hero image:** `frontend/src/assets/auth-hero.webp`, photo by **[author to be confirmed]**.
+- **Hero image:** `frontend/src/assets/auth-hero.jpg`, photo by **[author to be confirmed]**.
   The image shows third-party product packaging and is used for this non-commercial demo only.
 
 ## Known issues and next steps
