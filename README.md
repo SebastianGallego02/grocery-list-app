@@ -158,7 +158,7 @@ pull request. It builds the backend with `-warnaserror`, and fails if
 ## Repository structure
 
 ```text
-grocery-list/
+grocery-list-app/
 ├── backend/                     .NET solution (GroceryList.slnx)
 │   ├── src/
 │   │   ├── GroceryList.Domain/          entities and invariants, no dependencies
