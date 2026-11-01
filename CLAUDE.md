@@ -1,61 +1,54 @@
-# Grocery List – Development Assessment (2Share)
+# CLAUDE.md
 
-## Context
-Demo grocery list web app for a job assessment. Evaluated on professionalism, architecture,
-code quality, testing and documentation — not visual design. Deadline: Monday noon.
-Company stack: C#, React, TypeScript, Sass, REST/JSON, Git, Azure (desirable).
-
-## User stories
-1. Register with username, full name, password
-2. Login with username and password
-3. See own grocery list only — never another user's items
-4. Add a product
-5. Remove a product
-6. Tag a product (put in basket)
-7. Un-tag a product (put back)
-8. Logout
-9. No session = no products visible; login is mandatory
+Working agreement for AI-assisted development in this repository; see README > AI-assisted development.
 
 ## Repository layout
-- `backend/`: .NET solution (`GroceryList.slnx`), `src/` and `tests/`.
-- `frontend/`: React app.
-- `docs/`: project documentation.
-- `docker-compose.yml`, `.env.example`: local infrastructure (SQL Server).
+- `backend/`: .NET solution `GroceryList.slnx`, with `src/` and `tests/`. Local tools in
+  `backend/.config/dotnet-tools.json` (`dotnet-ef`).
+- `frontend/`: React + TypeScript + Vite + Sass SPA, feature-based folders under `src/`
+  (`api/`, `components/`, `features/auth/`, `features/groceries/`, `routes/`, `styles/`).
+- `docs/`: architecture, API reference, ADRs (`docs/adr/`), known issues.
+- `docker-compose.yml`, `.env.example`: SQL Server + API + web for local runs.
+- `.github/workflows/ci.yml`: build, tests, vulnerability scan, frontend lint/test/build.
 
-## Architecture (Clean Architecture, pragmatic)
-- `backend/src/GroceryList.Domain`: entities (User, GroceryItem), invariants. NO dependencies.
-- `backend/src/GroceryList.Application`: use-case services, Result pattern, DTOs, ports (interfaces).
-  Depends only on Domain.
-- `backend/src/GroceryList.Infrastructure`: EF Core + SQL Server, repositories, JWT, password hashing.
-  Implements Application interfaces.
-- `backend/src/GroceryList.Api`: ASP.NET Core endpoints, auth config, IExceptionHandler + ProblemDetails,
-  OpenAPI. Composition root (only place that references Infrastructure).
-- `backend/tests/GroceryList.UnitTests`, `backend/tests/GroceryList.IntegrationTests` (xUnit).
-- `frontend/`: React + TypeScript + Vite + Sass (feature-based folders).
+## Architecture (pragmatic Clean Architecture)
+- `backend/src/GroceryList.Domain`: entities (`User`, `GroceryItem`) and invariants. No dependencies.
+- `backend/src/GroceryList.Application`: use-case services, Result pattern, DTOs, ports
+  (`Abstractions/`). Depends only on Domain.
+- `backend/src/GroceryList.Infrastructure`: EF Core + SQL Server, repositories, JWT, password
+  hashing. Implements the Application ports.
+- `backend/src/GroceryList.Api`: controllers, auth, `IExceptionHandler` + ProblemDetails, OpenAPI.
+  Composition root, the only project that references Infrastructure.
 
-Dependency rule: dependencies point inward. Infrastructure → Application → Domain. Never the reverse.
+Dependencies point inward: Api → Infrastructure → Application → Domain. Never the reverse.
 
 ## Conventions
-- .NET 10, C# latest, nullable enabled, file-scoped namespaces, sealed classes by default.
+- .NET 10, C# latest, nullable enabled, file-scoped namespaces, `sealed` classes by default.
 - Everything in English: code, comments, commits, UI, docs.
-- async/await end to end; every async method accepts and propagates a CancellationToken.
-- Expected business errors → Result pattern. Exceptions only for truly unexpected situations.
-- Domain throws ArgumentException only for invariant violations (should never happen if
-  Application validates first).
-- Time comes from `TimeProvider`, never `DateTime.UtcNow` directly.
-- The current user's id ALWAYS comes from `ICurrentUser` (the token), never from request input.
-  Accessing another user's item returns NotFound (not Forbidden) to avoid leaking existence.
-- Keep it simple: no MediatR, no AutoMapper, no CQRS, no generic repository.
-  Do not add NuGet/npm packages without asking first.
-- Conventional Commits (feat:, fix:, test:, docs:, chore:, refactor:), small and focused.
+- async/await end to end; every async method accepts and propagates a `CancellationToken`.
+- Expected business errors use the Result pattern; exceptions only for unexpected situations.
+  Domain throws `ArgumentException` only for invariant violations.
+- Time comes from `TimeProvider`, never `DateTime.UtcNow`.
+- The current user's id always comes from `ICurrentUser` (the token), never from request input.
+  Another user's item returns 404 Not Found, not 403, so its existence is not revealed.
+- Keep it simple: no MediatR, AutoMapper, CQRS or generic repository.
+- Ask before adding NuGet or npm packages. One-off tools via `npx`/`dotnet tool` are fine but
+  are not added to `package.json`.
+- No real secrets in `appsettings.json`; `.env` is git-ignored, only `.env.example` is committed.
+- Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`, `refactor:`, …), small
+  and focused, one per logical step.
 
-## Environment
-- Windows + PowerShell (use `;` to chain commands, no bash globs).
+## Testing
 - Run dotnet commands from `backend/` and npm commands from `frontend/`.
-- After each change: `dotnet build` and `dotnet test` must pass before committing
-  (and `npm run build` for frontend changes).
+- Before committing: `dotnet build` and `dotnet test` pass, and for frontend changes
+  `npm run lint`, `npm test` and `npm run build` pass.
+- Unit tests (`GroceryList.UnitTests`, xUnit + NSubstitute + `FakeTimeProvider`) cover Domain,
+  Application and Infrastructure logic. Integration tests (`GroceryList.IntegrationTests`)
+  run the API against SQL Server via Testcontainers and need Docker.
+- New behaviour comes with tests, including the "other user's item" case for item endpoints.
 
 ## Working agreement
-- Explain the plan briefly before large changes.
+- Explain the plan briefly before large changes; work in small steps.
 - Ask before deciding anything not covered here.
 - Do not modify Domain without asking first.
+- Keep the docs (`README.md`, `docs/`) in sync with behaviour changes.
